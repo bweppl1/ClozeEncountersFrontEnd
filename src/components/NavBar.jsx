@@ -1,15 +1,15 @@
+import { Link } from "react-router-dom";
+
 const NavBar = () => {
   return (
     <div className="max-w-5xl mx-auto flex justify-between">
       <div>ClozeEncounters</div>
-      <div>
-        <ul className="flex gap-5">
-          <li>Home</li>
-          <li>Quiz</li>
-          <li>Stats</li>
-          <li>Settings</li>
-          <li>Login/Signup</li>
-        </ul>
+      <div className="flex gap-5">
+        <Link to="/">Home</Link>
+        <Link to="/quiz">Quiz</Link>
+        <Link to="/stats">Stats</Link>
+        <Link to="/settings">Settings</Link>
+        <Link to="/login">Login/Signup</Link>
       </div>
     </div>
   );
