@@ -10,6 +10,7 @@ const PlayScreen = () => {
   const [spanish, setSpanish] = useState("");
   const [answer, setAnswer] = useState("");
   const [chosenWords, setChosenWords] = useState([]);
+  const [quizMode, setQuizMode] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
   const [isAnswered, setIsAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -21,6 +22,7 @@ const PlayScreen = () => {
 
   const inputRef = useRef(null);
 
+  // Check answer logic
   const handleCheckAnswer = (answer, guess) => {
     const clean_guess = guess.toLowerCase();
     if (clean_guess === answer) {
@@ -36,17 +38,19 @@ const PlayScreen = () => {
       const nextRound = round + 1;
       setRound(nextRound);
       setGuess("");
-      if (round === maxRounds) {
+      if (round >= maxRounds) {
         setIsGameOver(true);
       }
       fetchClozeData();
     }, 2000);
   };
 
+  // Fetch all data for the quiz
   const fetchClozeData = async () => {
     setIsLoading(true);
     try {
-      const cloze_data = await get_random_cloze();
+      const max_id = quizMode;
+      const cloze_data = await get_random_cloze(max_id);
       console.log(cloze_data);
 
       setCloze(cloze_data["cloze"]);
@@ -55,6 +59,9 @@ const PlayScreen = () => {
       setEnglish(cloze_data["english"]);
       setSpanish(cloze_data["spanish"]);
       setAnswer(cloze_data["answer"]);
+
+      // debug
+      console.log(`Word ID: ${cloze_data["word_id"]}`);
     } catch (error) {
       console.error("Issue with cloze fetch: ", error);
     } finally {
@@ -62,19 +69,22 @@ const PlayScreen = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchClozeData();
-  // }, [round]);
-
+  // Focus user input for user quality of life
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [cloze]);
 
+  // Render initial cloze
   useEffect(() => {
     fetchClozeData();
   }, []);
+
+  // Refetch cloze if mode changes
+  useEffect(() => {
+    fetchClozeData();
+  }, [quizMode]);
 
   // Using enter to submit
   const handleKeyDown = (e) => {
@@ -83,14 +93,17 @@ const PlayScreen = () => {
     }
   };
 
+  // Temp function to restart quiz
   const reloadPage = () => {
     window.location.reload();
   };
 
+  // Give time for data to be fetched before rendering page
   if (isLoading) {
     return <div className="flex-1">Loading...</div>;
   }
 
+  // End game screen
   if (isGameOver) {
     return (
       <div className="flex-1 justify-center my-5 mx-auto w-5xl rounded text-center flex flex-col gap-5">
@@ -111,9 +124,25 @@ const PlayScreen = () => {
 
   return (
     <div className="flex-1 max-w-5xl w-full mx-auto p-5">
+      {/* Settings bar */}
+      <div className="max-w-5xl bg-gray-500 rounded text-white flex items-center px-2 py-2 my-2">
+        <h3 className="font-bold px-5">Most Common Words</h3>
+        <ul className="flex gap-5">
+          <li onClick={() => setQuizMode(10)} className="cursor-pointer">
+            Top 10
+          </li>
+          <li onClick={() => setQuizMode(50)} className="cursor-pointer">
+            Top 50
+          </li>
+          <li onClick={() => setQuizMode(100)} className="cursor-pointer">
+            Top 100
+          </li>
+        </ul>
+      </div>
       <div className="mx-auto text-center">
         Round {round} / {maxRounds}
       </div>
+      {/* Cloze display */}
       {isAnswered ? (
         <Question english={english} spanish={spanish} />
       ) : (
@@ -126,7 +155,7 @@ const PlayScreen = () => {
           ref={inputRef}
           type="text"
           placeholder="respuesta"
-          className="bg-gray-500 text-white mx-auto rounded py-2 px-6 w-200"
+          className="focus:outline-0 bg-gray-500 min-w-100 text-white mx-auto rounded py-2 px-6"
           value={guess}
           onKeyDown={handleKeyDown}
           onChange={(e) => setGuess(e.target.value)}
