@@ -106,7 +106,7 @@ const PlayScreen = () => {
   // End game screen
   if (isGameOver) {
     return (
-      <div className="flex-1 justify-center my-5 mx-auto w-5xl rounded text-center flex flex-col gap-5">
+      <div className="flex-1 py-25 mx-auto text-center flex flex-col gap-5">
         <h1 className="text-5xl bold">Game Over</h1>
         <span>
           Correct Answers: {correctAnswers} / {maxRounds}
@@ -163,7 +163,7 @@ const PlayScreen = () => {
         {/* Submit button */}
         <button
           onClick={() => handleCheckAnswer(answer, guess)}
-          className="bg-black text-white cursor-pointer rounded py-2 px-6 mx-auto"
+          className="bg-gray-800 hover:bg-black text-white cursor-pointer rounded py-2 px-6 mx-auto"
         >
           Submit
         </button>

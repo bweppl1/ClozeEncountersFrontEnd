@@ -8,9 +8,9 @@ const NavBar = () => {
           Cloze<span className="font-bold">Encounters</span>
         </h1>
         <div className="flex gap-5 justify-center items-center">
-          <Link to="/">Home</Link>
+          {/* <Link to="/">Home</Link> */}
           <Link
-            to="/quiz"
+            to="/"
             className="bg-gray-800 text-white hover:bg-black px-6 py-2 rounded"
           >
             Play
