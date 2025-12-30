@@ -6,22 +6,28 @@ import Stats from "./pages/Stats";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AuthProvider from "./contexts/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
     <div className="min-h-screen flex flex-col">
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<PlayScreen />} />
-          {/* <Route path="/quiz" element={<PlayScreen />} /> */}
-          <Route path="/stats" element={<Stats />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </BrowserRouter>
-      <Footer />
+      <AuthProvider>
+        <BrowserRouter>
+          <NavBar />
+          <Routes>
+            {/* <Route path="/" element={<Home />} /> */}
+            <Route path="/" element={<PlayScreen />} />
+            {/* <Route path="/quiz" element={<PlayScreen />} /> */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/stats" element={<Stats />} />
+            </Route>
+            {/* <Route path="/settings" element={<Settings />} /> */}
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </BrowserRouter>
+        <Footer />
+      </AuthProvider>
     </div>
   );
 }

@@ -1,28 +1,52 @@
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+
 const Login = () => {
+  const [input, setInput] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const auth = useAuth();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (input.email !== "" && input.password !== "") {
+      // Update to ensure valid email is input later**
+      auth.loginAction(input);
+      setError("");
+      console.log(`Input: ${input.email} and ${input.password}`); // debug
+    } else {
+      setError("Please enter an E-mail and Password.");
+    }
+  };
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setInput((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className="flex-1 max-w-5xl mx-auto">
-      <div className="bg-gray-200 min-w-100 rounded my-25 p-6 flex flex-col gap-5">
-        <h1 className="mx-auto font-bold">Login / Sign-up</h1>
-        <span className="text-red-500 mx-auto">*** Not Implemented ***</span>
-        <h3 className="flex justify-center gap-5">
-          Username:{" "}
+      <div className="bg-gray-200 min-w-100 rounded my-25 p-6 gap-5">
+        <h1 className="text-2xl mx-auto">Login</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+          <label htmlFor="user-email">Email:</label>
           <input
-            type="text"
-            id="email"
-            className="bg-gray-500 text-white rounded"
+            type="email"
+            name="email"
+            placeholder="example@hotmail.com"
+            onChange={handleInput}
+            className="bg-white p-2 rounded"
           />
-        </h3>
-        <h3 className="flex justify-center gap-5">
-          Password:{" "}
+          <label htmlFor="user-password">Password:</label>
           <input
-            type="text"
-            id="password"
-            className="bg-gray-500 text-white rounded"
+            type="password"
+            name="password"
+            placeholder="password"
+            onChange={handleInput}
+            className="bg-white p-2 rounded"
           />
-        </h3>
-        <button className="bg-gray-800 text-white cursor-pointer px-6 py-2 mx-auto rounded hover:bg-black">
-          Submit
-        </button>
+          <button className="btn-primary">Submit</button>
+        </form>
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const NavBar = () => {
+  const auth = useAuth();
   return (
     <div className="bg-gray-500 text-white w-full p-5">
       <div className="max-w-5xl flex justify-between items-center mx-auto">
@@ -17,6 +19,11 @@ const NavBar = () => {
           </Link>
           <Link to="/stats">Stats</Link>
           <Link to="/login">Login/Signup</Link>
+          {auth.user && (
+            <Button className="primary-btn" onClick={() => auth.logOut}>
+              Logout
+            </Button>
+          )}
         </div>
       </div>
     </div>

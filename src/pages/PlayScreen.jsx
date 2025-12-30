@@ -112,10 +112,7 @@ const PlayScreen = () => {
           Correct Answers: {correctAnswers} / {maxRounds}
         </span>
         <span>Accuracy: {Math.floor((correctAnswers / maxRounds) * 100)}%</span>
-        <button
-          className="bg-black text-white cursor-pointer rounded py-2 px-6 mx-auto"
-          onClick={reloadPage}
-        >
+        <button className="btn-primary" onClick={reloadPage}>
           Play Again
         </button>
       </div>
@@ -163,7 +160,7 @@ const PlayScreen = () => {
         {/* Submit button */}
         <button
           onClick={() => handleCheckAnswer(answer, guess)}
-          className="bg-gray-800 hover:bg-black text-white cursor-pointer rounded py-2 px-6 mx-auto"
+          className="btn-primary"
         >
           Submit
         </button>
