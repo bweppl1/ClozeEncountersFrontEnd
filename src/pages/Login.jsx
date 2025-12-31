@@ -47,6 +47,7 @@ const Login = () => {
           />
           <button className="btn-primary">Submit</button>
         </form>
+        {error && <span className="mx-auto">{error}</span>}
       </div>
     </div>
   );
