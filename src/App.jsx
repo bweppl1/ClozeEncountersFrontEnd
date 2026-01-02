@@ -12,8 +12,8 @@ import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
     <div className="min-h-screen flex flex-col">
-      <AuthProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
           <NavBar />
           <Routes>
             {/* <Route path="/" element={<Home />} /> */}
@@ -25,9 +25,9 @@ function App() {
             {/* <Route path="/settings" element={<Settings />} /> */}
             <Route path="/login" element={<Login />} />
           </Routes>
-        </BrowserRouter>
-        <Footer />
-      </AuthProvider>
+          <Footer />
+        </AuthProvider>
+      </BrowserRouter>
     </div>
   );
 }
