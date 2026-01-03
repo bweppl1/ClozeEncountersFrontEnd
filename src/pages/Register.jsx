@@ -11,7 +11,7 @@ const Login = () => {
     e.preventDefault();
     if (input.email !== "" && input.password !== "") {
       // Update to ensure valid email is input later**
-      auth.loginAction(input, "login");
+      auth.loginAction(input, "register");
       setError("");
       console.log(`Input: ${input.email} and ${input.password}`); // debug
     } else {

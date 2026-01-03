@@ -7,15 +7,20 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const [token, setToken] = useState(localStorage.getItem("site") || "");
   const navigate = useNavigate();
-  const loginAction = async (user_data) => {
+
+  const loginAction = async (user_data, transactionType) => {
+    console.log(`user data loginAction: ${user_data}`);
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `http://localhost:8000/auth/${transactionType}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user_data),
         },
-        body: JSON.stringify(user_data),
-      });
+      );
       const res = await response.json();
       if (res.user_data) {
         setUser(res.user_data);
@@ -27,6 +32,7 @@ const AuthProvider = ({ children }) => {
       throw new Error(res.message);
     } catch (err) {
       console.error(err);
+      // need better error messaging
     }
   };
 

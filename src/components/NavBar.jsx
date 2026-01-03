@@ -20,9 +20,9 @@ const NavBar = () => {
           <Link to="/stats">Stats</Link>
           <Link to="/login">Login/Signup</Link>
           {auth.user && (
-            <Button className="primary-btn" onClick={() => auth.logOut}>
+            <button className="primary-btn" onClick={() => auth.logOut}>
               Logout
-            </Button>
+            </button>
           )}
         </div>
       </div>
