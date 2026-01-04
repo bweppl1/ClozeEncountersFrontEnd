@@ -5,6 +5,7 @@ import PlayScreen from "./pages/PlayScreen";
 import Stats from "./pages/Stats";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./contexts/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
@@ -24,6 +25,7 @@ function App() {
             </Route>
             {/* <Route path="/settings" element={<Settings />} /> */}
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
           <Footer />
         </AuthProvider>

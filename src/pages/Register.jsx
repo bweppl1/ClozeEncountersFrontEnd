@@ -3,10 +3,12 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Login = () => {
   const [input, setInput] = useState({ email: "", password: "" });
+  const [token, setToken] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const auth = useAuth();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.email !== "" && input.password !== "") {
@@ -27,7 +29,7 @@ const Login = () => {
   return (
     <div className="flex-1 max-w-5xl mx-auto">
       <div className="bg-gray-200 min-w-100 rounded my-25 p-6 gap-5">
-        <h1 className="text-2xl mx-auto">Login</h1>
+        <h1 className="text-2xl mx-auto">Register</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <label htmlFor="user-email">Email:</label>
           <input

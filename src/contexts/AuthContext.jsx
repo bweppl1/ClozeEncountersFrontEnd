@@ -1,4 +1,4 @@
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -6,21 +6,30 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const [token, setToken] = useState(localStorage.getItem("site") || "");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+  const API_BASE = "http://localhost:8000";
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("site");
+    if (storedToken) {
+      findUserWithToken(storedToken);
+    }
+    setLoading(false);
+  }, []);
+
+  // log user in, or register, depending on transactionType
   const loginAction = async (user_data, transactionType) => {
-    console.log(`user data loginAction: ${user_data}`);
+    console.log(`DEBUG user data loginAction: ${user_data}`);
     try {
-      const response = await fetch(
-        `http://localhost:8000/auth/${transactionType}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user_data),
+      const response = await fetch(`${API_BASE}/auth/${transactionType}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(user_data),
+      });
       const res = await response.json();
       if (res.user_data) {
         setUser(res.user_data);
@@ -31,19 +40,53 @@ const AuthProvider = ({ children }) => {
       }
       throw new Error(res.message);
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
       // need better error messaging
     }
+    setLoading(false);
   };
 
+  // log user out, reset states
   const logOut = () => {
     setUser(null);
     setToken("");
     localStorage.removeItem("site");
     navigate("/login");
+    setLoading(false);
   };
+
+  // verify user with token
+  const findUserWithToken = async (storedToken) => {
+    console.log(`DEBUG finding user with token: ${storedToken}`);
+    try {
+      const response = await fetch(`${API_BASE}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
+      if (response.ok) {
+        const user_data = await response.json();
+        setUser(user_data);
+        setToken(storedToken);
+      } else {
+        localStorage.removeItem("site");
+      }
+    } catch (err) {
+      console.error(err.message);
+      // need better error messaging here too
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <div className="w-full text-center">Loading...</div>;
+  }
+
   return (
-    <AuthContext.Provider value={{ user, token, loginAction, logOut }}>
+    <AuthContext.Provider
+      value={{ user, token, loginAction, logOut, findUserWithToken }}
+    >
       {children}
     </AuthContext.Provider>
   );
