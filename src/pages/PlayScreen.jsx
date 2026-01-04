@@ -125,13 +125,22 @@ const PlayScreen = () => {
       <div className="max-w-5xl bg-gray-500 rounded text-white flex items-center px-2 py-2 my-2">
         <h3 className="font-bold px-5">Most Common Words</h3>
         <ul className="flex gap-5">
-          <li onClick={() => setQuizMode(10)} className="cursor-pointer">
+          <li
+            onClick={() => setQuizMode(10)}
+            className={`nav-link ${quizMode === 10 ? "text-yellow-500 font-bold" : ""}`}
+          >
             Top 10
           </li>
-          <li onClick={() => setQuizMode(50)} className="cursor-pointer">
+          <li
+            onClick={() => setQuizMode(50)}
+            className={`nav-link ${quizMode === 50 ? "text-yellow-500 font-bold" : ""}`}
+          >
             Top 50
           </li>
-          <li onClick={() => setQuizMode(100)} className="cursor-pointer">
+          <li
+            onClick={() => setQuizMode(100)}
+            className={`nav-link ${quizMode === 100 ? "text-yellow-500 font-bold" : ""}`}
+          >
             Top 100
           </li>
         </ul>

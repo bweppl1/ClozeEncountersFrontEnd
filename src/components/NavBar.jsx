@@ -8,9 +8,9 @@ const NavBar = () => {
   return (
     <div className="bg-gray-500 text-white w-full p-5">
       <div className="max-w-5xl flex justify-between items-center mx-auto">
-        <h1 className="text-2xl">
+        <Link to="/" className="text-2xl">
           Cloze<span className="font-bold">Encounters</span>
-        </h1>
+        </Link>
         <div className="flex gap-5 justify-center items-center">
           {/* <Link to="/">Home</Link> */}
           <Link to="/" className="nav-link">
@@ -18,7 +18,7 @@ const NavBar = () => {
           </Link>
 
           {auth.user ? (
-            <Link to="/stats" className="nav-link">
+            <Link to="/stats" className="nav-link font-black">
               {auth.user.email}
             </Link>
           ) : (
